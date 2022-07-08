@@ -28,7 +28,6 @@ const userOptions = () => {
             "Add an employee",
             "Remove an employee",
             "Update an employee role",
-            "Update an employee's manager",
             "Exit",
           ],
         },
@@ -67,11 +66,9 @@ const userOptions = () => {
       case "Update an employee role":
         updateEmployeeRole();
         break;
-      case "Update an employee's manager":
-        updateEmployeeManager();
-        break;
       default:
         exit();
     }
   });
 }; 
+
