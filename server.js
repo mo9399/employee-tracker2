@@ -82,3 +82,16 @@ const viewDepartments = () => {
       userOptions();
     });
   };
+
+// View roles
+const viewRoles = () => {
+    db.query(
+      `SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department on role.department_id = department.id;`,
+      (err, res) => {
+        if (err) throw err;
+        console.table(res);
+  
+        userOptions();
+      }
+    );
+  };
