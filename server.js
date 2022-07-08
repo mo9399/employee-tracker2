@@ -242,3 +242,81 @@ const removeRole = () => {
       });
   });
 };
+
+// Add employee
+const addEmployee = () => {
+    return inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "first_name",
+          message: "Employee first name:",
+        },
+        {
+          type: "input",
+          name: "last_name",
+          message: "Employee last name:",
+        },
+      ])
+      .then((res) => {
+        let firstName = res.first_name;
+        let lastName = res.last_name;
+        db.query(`SELECT * FROM role`, (err, roleRes) => {
+          if (err) throw err;
+          const roleChoices = [];
+          roleRes.forEach(({ id, title }) => {
+            roleChoices.push({
+              name: title,
+              value: id,
+            });
+          });
+          inquirer
+            .prompt({
+              type: "list",
+              name: "roleId",
+              message: "Employee role:",
+              choices: roleChoices,
+            })
+            .then((res) => {
+              roleId = res.roleId;
+              db.query(`SELECT * FROM employee`, (err, employeeRes) => {
+                if (err) throw err;
+                const managerChoices = [
+                  {
+                    name: "None",
+                    value: null,
+                  },
+                ];
+                employeeRes.forEach(({ id, first_name, last_name }) => {
+                  managerChoices.push({
+                    name: first_name + " " + last_name,
+                    value: id,
+                  });
+                });
+                inquirer
+                  .prompt({
+                    type: "list",
+                    name: "managerId",
+                    message: "Employee's manager:",
+                    choices: managerChoices,
+                  })
+                  .then((res) => {
+                    const sql = `INSERT INTO EMPLOYEE (first_name, last_name, role_id, manager_id) VALUES (?)`;
+                    db.query(
+                      sql,
+                      [[firstName, lastName, roleId, res.managerId]],
+                      (err, res) => {
+                        if (err) throw err;
+                        console.log(
+                          `Added employee ${firstName} ${lastName} as an employee.`
+                        );
+                        userOptions();
+                      }
+                    );
+                  });
+              });
+            });
+        });
+      });
+  };
+  
