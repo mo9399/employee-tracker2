@@ -358,7 +358,7 @@ const updateEmployeeRole = () => {
     db.query(`SELECT * FROM employee;`, (err, employeeRes) => {
         if (err) throw err;
         const employeeChoices = [];
-        employeeRes.forEach(({ id, first_name, last_name })=> {
+        employeeRes.forEach(({ id, first_name, last_name}) => {
           employeeChoices.push({
             name: first_name + " " + last_name,
             value: id,
@@ -373,35 +373,66 @@ const updateEmployeeRole = () => {
           })
           .then((res) => {
             employeeId = res.employeeId;
-            db.query(`SELECT * FROM role`, (err, roleRes) => {
+            db.query(`SELECT id, first_name, last_name FROM employee WHERE id != ?`,
+            employeeId,
+            (err, managersRes) => {
               if (err) throw err;
-              const roleChoices = [];
-              roleRes.forEach(({ id, title }) => {
-                roleChoices.push({
-                  name: title,
+              const managerChoices = [];
+              managersRes.forEach(({ id, first_name, last_name }) => {
+                managerChoices.push({
+                  name: first_name + " " + last_name,
                   value: id,
                 });
               });
               inquirer
                 .prompt({
                   type: "list",
-                  name: "roleId",
-                  message: "New role:",
-                  choice: roleChoices,
+                  name: "employeeId",
+                  message: "Which employee would you like to update",
+                  choices: employeeChoices,
                 })
                 .then((res) => {
-                  roleId = res.roleId;
-                  db.query(`UPDATE employee SET role_id = ? where id = ?`,
-                    [roleId, employeeId],
-                    (err, res) => {
-                      if (err) throw err;
-                      console.log("Employee's role has been updated.");
-                      userOptions();
-                    }
+                  employeeId = res.employeeId;
+                  db.query(`SELECT id, first_name, last_name FROM employee WHERE id != ?`,
+                  employeeId,
+                  (err, managersRes) => {
+                    if (err) throw err;
+                    const managerChoices = [];
+                    managersRes.forEach(({ id, first_name, last_name}) => {
+                      managerChoices.push({
+                        name: first_name + " " + last_name,
+                        value: id,
+                      });
+                    });
+                    inquirer
+                      .prompt({
+                        type: "list",
+                        name: "managerId",
+                        message: "New manager:",
+                        choices: managerChoices,
+                      })
+                      .then((res) => {
+                        managerId = res.managerId;
+                        db.query(`UPDATE employee SET manager_id = ? WHERE id = ?`,
+                          [managerId, employeeId],
+                          (err, res) => {
+                            if (err) throw err;
+                            console.log("Employee's manager has been updated.");
+                            userOptions();
+                          }
+                        );
+                      });
+                  }
                   );
                 });
-            });
+            }
+            );
           });
       });
     };
     
+// Exit 
+const exit = () => {
+    console.log("Goodbye!");
+    process.exit();
+  };    
