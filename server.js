@@ -213,3 +213,32 @@ const addRole = () => {
       }
     );
   };
+
+// Delete role
+const removeRole = () => {  
+  db.query(`SELECT * FROM role`, (err, roleRes) => {
+    if (err) throw err;
+    const roleChoices = [];
+    roleRes.forEach(({ id, title }) => {
+      roleChoices.push({
+        name: title,
+        value: id,
+      });
+    });
+    inquirer
+      .prompt({
+        type: "list",
+        name: "roleId",
+        message: "Which role would you like to remove?",
+        choices: roleChoices,
+      })
+      .then((res) => {
+        roleId = res.roleId;
+        db.query(`DELETE FROM role WHERE id = ?`, roleId, (err, res) => {
+          if (err) throw err;
+          console.log("The role has been removed.");
+          userOptions();
+        });
+      });
+  });
+};
