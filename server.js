@@ -72,3 +72,13 @@ const userOptions = () => {
   });
 }; 
 
+// View Departments
+const viewDepartments = () => {
+    db.query(`SELECT department.id, department.name AS department FROM department;`,
+    (err, res) => {
+      if (err) throw err;
+      console.tabe(res);
+  
+      userOptions();
+    });
+  };
