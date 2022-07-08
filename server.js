@@ -319,4 +319,37 @@ const addEmployee = () => {
         });
       });
   };
+
+// Delete employee
+const removeEmployee = () => {
+    db.query(`SELECT * FROM employee`, (err, employeeRes) => {
+      if (err) throw err;
+      const employeeChoices = [];
+      employeeRes.forEach(({ id, first_name, last_name }) => {
+        employeeChoices.push({
+          name: first_name + " " + last_name,
+          value: id,
+        });
+      });
+      inquirer
+        .prompt({
+          type: "list",
+          name: "employeeId",
+          message: "Which employee would you like to remove?",
+          choices: employeeChoices,
+        })
+        .then((res) => {
+          employeeId = res.employeeId;
+          db.query(
+            `DELETE FROM employee WHERE id = ?`,
+            employeeId,
+            (err, res) => {
+              if (err) throw err;
+              console.log("Employee has been removed.");
+              userOptions();
+            }
+          );
+        });
+    });
+  };  
   
