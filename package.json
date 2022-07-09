@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "server.js",
+    "start": "node server.js",
     "seed": "node db/seeds.sql"
   },
   "repository": {
@@ -19,9 +19,11 @@
   },
   "homepage": "https://github.com/mo9399/employee-tracker2#readme",
   "dependencies": {
+    "15": "^0.0.0",
     "console.table": "^0.10.0",
     "dotenv": "^16.0.1",
-    "inquirer": "^9.0.0",
-    "mysql2": "^2.3.3"
+    "inquirer": "^8.2.4",
+    "mysql2": "^2.3.3",
+    "node-fetch": "^3.2.6"
   }
 }

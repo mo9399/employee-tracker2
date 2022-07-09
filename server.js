@@ -3,15 +3,16 @@ const inquirer = require("inquirer");
 const db = require("./db/connection.js");
 const console = require("console.table");
 
+
 // Connect to the database
 db.connect((err) => {
   if (err) throw err;
   userOptions();
-});
+  });
 
 // User prompts through CLI
 const userOptions = () => {
-    return inquirer
+  return inquirer
       .prompt([
         {
           type: "list",
@@ -435,4 +436,9 @@ const updateEmployeeRole = () => {
 const exit = () => {
     console.log("Goodbye!");
     process.exit();
-  };    
+  }; 
+  
+  
+userOptions();
+  
+  

@@ -1,3 +1,32 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@mo9399 
+mo9399
+/
+employee-tracker2
+Public
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+employee-tracker2/db/seeds.sql
+
+your name add viewRole function to server.js
+Latest commit 2557333 5 hours ago
+ History
+ 1 contributor
+35 lines (32 sloc)  901 Bytes
+
 use employees2;
 
 INSERT INTO department (name)
@@ -13,7 +42,7 @@ VALUES
 ('Manager', 120000, 1),
 ('Assistant Manger', 75000, 1),
 ('Accounting Manager', 100000, 2),
-('Accounting Assistant', 85000, 2)
+('Accounting Assistant', 85000, 2),
 ('Human Resources Manager', 90000, 3),
 ('Human Resource Assistant', 80000, 3),
 ('I.T. Manager', 120000, 4),
